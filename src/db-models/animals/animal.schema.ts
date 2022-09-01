@@ -1,9 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { AnimalKind } from 'src/domain-models';
+import { AnimalKind } from '../../domain-models';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-@Schema({ _id: false, discriminatorKey: 'kind' })
-class AnimalModel {
+@Schema({ _id: false, autoCreate: false, discriminatorKey: 'kind'})
+export class AnimalModel {
     @Prop({ type: String, required: true, enum: Object.values(AnimalKind) })
     kind!: AnimalKind;
 

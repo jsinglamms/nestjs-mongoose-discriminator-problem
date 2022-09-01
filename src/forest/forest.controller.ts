@@ -12,7 +12,8 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Error as MongooseError, Model } from 'mongoose';
-import { ForestDocument, ForestModel } from 'src/db-models';
+import { ForestModel } from '../db-models';
+import { WolfModel } from '../db-models/animals/wolf.schema';
 
 export class CreateForestDto {
     @ApiProperty()
@@ -35,13 +36,13 @@ export class ForestController {
      * mongoose layer in our controller.
      * For a real application, use a service instead ;) !
      */
-    constructor(@InjectModel(ForestModel.name) private readonly forestModel: Model<ForestDocument>) {}
+    constructor(@InjectModel(ForestModel.name) private readonly forestModel: Model<ForestModel>) {}
 
     @Post()
     public async addForest(@Body() forest: CreateForestDto): Promise<void> {
         await this.forestModel.create({ name: forest.forestName, animals: [] });
     }
-
+/*
     @Put(':forestName/animals')
     public async addAnimal(@Param('forestName') forestName: string, @Body() animal: AddAnimalDto): Promise<void> {
         const forest = await this.findForestOrThrow(forestName);
@@ -62,7 +63,7 @@ export class ForestController {
             throw error;
         }
     }
-
+*/
     @Get(':forestName')
     public async getForest(@Param('forestName') forestName: string): Promise<unknown> {
         const forest = await this.findForestOrThrow(forestName);

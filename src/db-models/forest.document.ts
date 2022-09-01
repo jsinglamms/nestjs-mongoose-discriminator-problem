@@ -1,7 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
-import { AnimalSchema } from './animal.schema';
-import { registerAnimalSchemaDiscriminator } from './register-animal-schema-discriminator';
+import { Document } from 'mongoose';
+import { AnimalModel, AnimalSchema } from './animals/animal.schema';
+import { HareModel } from './animals/hare.schema';
+import { UnicornModel } from './animals/unicorn.schema';
+import { WolfModel } from './animals/wolf.schema';
+
+export type AnimalsUnion = (WolfModel | HareModel | UnicornModel) & AnimalModel
 
 @Schema()
 export class ForestModel {
@@ -9,12 +13,9 @@ export class ForestModel {
     name!: string;
 
     @Prop({ required: true, type: [AnimalSchema] })
-    animals!: unknown[];
+    animals!: AnimalsUnion[];
 }
 
 export const ForestSchema = SchemaFactory.createForClass(ForestModel);
-
-const animalsArraySchema = ForestSchema.path('animals') as MongooseSchema.Types.DocumentArray;
-registerAnimalSchemaDiscriminator(animalsArraySchema);
 
 export type ForestDocument = ForestModel & Document;
