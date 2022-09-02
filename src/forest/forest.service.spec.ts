@@ -66,7 +66,7 @@ describe('CatsService', () => {
     })
 
     it('Load data should not work, because of missing data in the non-discriminated part', async ()=>{
-        const wolf: WolfModel = {
+        const wolf: Omit<WolfModel, 'numberOfLegs'> = {
             kind: AnimalKind.Wolf,
             canineLengthInCm: 15,
         }
