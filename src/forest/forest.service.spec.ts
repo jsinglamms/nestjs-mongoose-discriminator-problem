@@ -94,4 +94,13 @@ describe('CatsService', () => {
 
         await expect(subject.insertData(insertedData)).rejects.toThrowError()
     })
+
+    it('insert animal should not work, because of missing data in the discriminated part', async ()=>{
+        const wolf: AnimalModel = {
+            kind: AnimalKind.Wolf,
+            numberOfLegs: 4
+        }
+
+        await expect(subject.insertAnimal(wolf as AnimalsUnion)).rejects.toThrowError()
+    })
 })
